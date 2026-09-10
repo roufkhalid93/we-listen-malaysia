@@ -12,10 +12,11 @@ function formatMYR(n: number) {
 export default async function CauseDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   const causes = await getCauses();
-  const cause = causes.find((c) => c.slug === params.slug);
+  const cause = causes.find((c) => c.slug === slug);
   if (!cause) return notFound();
 
   const pct = Math.min(100, Math.round((cause.raised / cause.goal) * 100));
